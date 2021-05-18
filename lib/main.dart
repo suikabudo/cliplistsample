@@ -40,49 +40,45 @@ void savedata()async{
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
 
   @override
   Widget build(BuildContext context) {
+    savedata();
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child:  Container(
-      child: FutureBuilder<List<PageData>>(
-          //以下のコードにするとエラーになってしまいます
-        // future: Provider.of<ClipListModel>(context, listen: true).request(),
-          future:ClipListModel().request(),
-        builder: (ctx, dataSnapshot) {
-          if (dataSnapshot.connectionState == ConnectionState.waiting) {
-            // 非同期処理未完了 = 通信中
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: Center(
+            child: Container(
+                child: FutureBuilder<List<PageData>>(
+                  //以下のコードにするとエラーになってしまいます
+                  // future: Provider.of<ClipListModel>(context, listen: true).request(),
+                   future:ClipListModel().request(),
+                    builder: (ctx, dataSnapshot) {
+                      if (dataSnapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        // 非同期処理未完了 = 通信中
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
 
-          if (dataSnapshot.error != null) {
-            // エラー
-            return Center(
-                child: Text('エラーが発生しました。一度アプリを終了し再度起動してください')
-            );
-          }
+                      if (dataSnapshot.error != null) {
+                        // エラー
+                        return Center(
+                            child: Text('エラーが発生しました。一度アプリを終了し再度起動してください')
+                        );
+                      }
 
-          if(dataSnapshot.data.length==0){
-            return Center(
-                child:Text('データがありません')
-            );
-          }
-          return clipListContents(dataSnapshot.data);
-
-        })))
-      );
+                      if (dataSnapshot.data.length == 0) {
+                        return Center(
+                            child: Text('データがありません')
+                        );
+                      }
+                      return clipListContents(dataSnapshot.data);
+                    })))
+    );
   }
 }
 

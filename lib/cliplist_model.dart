@@ -17,6 +17,9 @@ class ClipListModel extends ChangeNotifier {
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
     cliplist = prefs.getStringList("CLIPLIST");
+    if(cliplist==null){
+      cliplist=[];
+    }
 
     for (int i = 0; i < cliplist.length; i++) {
       PageData tmpPageData = new PageData();
